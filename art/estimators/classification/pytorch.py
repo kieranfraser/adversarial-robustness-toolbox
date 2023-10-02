@@ -1204,7 +1204,7 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
         except ImportError:  # pragma: no cover
             raise ImportError("Could not find PyTorch (`torch`) installation.") from ImportError
 
-    def set_device(device: str):
+    def set_device(self, device: str):
         self._device = device
         self._model.to(device)
         if self.preprocessing is not None:

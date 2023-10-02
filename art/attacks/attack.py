@@ -200,6 +200,9 @@ class Attack(abc.ABC):
                 if hasattr(self._attack, param):
                     param_str += f"{param}={getattr(self._attack, param)}, "
         return f"{type(self).__name__}({param_str})"
+    
+    def set_estimator(self, estimator):
+        self._estimator = estimator
 
 
 class EvasionAttack(Attack):
