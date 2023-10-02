@@ -309,7 +309,7 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
         """
         import torch
         from torch.utils.data import TensorDataset, DataLoader
-
+        self._model.to(self._device)
         # Set model mode
         self._model.train(mode=training_mode)
 
@@ -832,6 +832,7 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
             labels_t = y_preprocessed
 
         # Compute the gradient and return
+        self._model.to(self._device)
         model_outputs = self._model(inputs_t)
         loss = self._loss(model_outputs[-1], labels_t)
 
@@ -1203,3 +1204,9 @@ class PyTorchClassifier(ClassGradientsMixin, ClassifierMixin, PyTorchEstimator):
 
         except ImportError:  # pragma: no cover
             raise ImportError("Could not find PyTorch (`torch`) installation.") from ImportError
+
+    def update_device(device: str):
+        self._device = device
+        self._model.to(device)
+        if self.preprocessing is not None:
+            self.preprocessing._device = device
